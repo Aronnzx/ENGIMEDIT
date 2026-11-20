@@ -1,0 +1,240 @@
+EngimEdit — risultati dei test (2026-11-20, Chromium headless via Playwright, Node v22.23.5)
+
+## Test unitari (npm test)
+ok 1 - layout e durata totale
+ok 2 - locate: dentro, al confine e oltre la fine
+ok 3 - split al cursore crea due clip contigue
+ok 4 - split rifiutato vicino ai bordi o oltre la fine
+ok 5 - split della seconda clip usa il tempo sorgente corretto
+ok 6 - trim con limiti e ripple
+ok 7 - remove con ripple
+ok 8 - duplicate inserisce la copia subito dopo
+ok 9 - move: riordino singolo e multiplo
+ok 10 - gapAt sceglie lo spazio più vicino
+ok 11 - patch modifica solo se cambia qualcosa
+ok 12 - snap aggancia entro la soglia
+ok 13 - cronologia: annulla e ripeti
+ok 14 - immutabilità: le operazioni non modificano l'input
+ok 15 - migrate ripara progetti incompleti e rimuove clip orfane
+ok 16 - toCloud esclude la miniatura
+ok 17 - migrate da schema 1 a 2: tre tracce, impostazioni e nessuna perdita di dati
+ok 18 - migrate scarta valori non validi e clip incompatibili con la traccia
+ok 19 - tracce libere: inserimento senza sovrapposizioni, spostamento e totale
+ok 20 - tracce libere: taglio con limiti dei vicini, divisione e slip
+ok 21 - patch dei gruppi unisce i valori e conserva i predefiniti
+ok 22 - copia e incolla attributi per gruppi
+ok 23 - dissolvenze audio e zoom dinamico
+# tests 23
+# pass 23
+# fail 0
+
+## Test end-to-end (npm run test:e2e)
+
+=== e2e1 ===
+  ok  landing: titolo
+  ok  dashboard: stato vuoto
+  ok  tutorial: passo 1 visibile
+  ok  tutorial: passo 2
+  ok  tutorial: saltato
+  ok  importazione: 4 video validi in libreria
+     toast errori: [
+  '“Rotto.mp4” sembra danneggiato o incompleto. Prova a scaricarlo o copiarlo di nuovo.',
+  '“appunti.txt” non è un video, un’immagine o un audio supportato. Scegli MP4, MOV, WebM, PNG, JPG, WebP, MP3, WAV, M4A, OGG o AAC.'
+]
+  ok  errore chiaro per file danneggiato
+  ok  errore chiaro per file non video
+     metadati: [
+  'Paesaggio.mp41280×720, 30 fps, 2,3 MB',
+  'Verticale.mp4720×1280, 30 fps, 131 KB',
+  'Barre.webm640×360, 41 KB',
+  'Muto.mp4640×360, 30 fps, 504 KBSenza audio'
+]
+  ok  metadati: risoluzione e fps
+  ok  badge Senza audio
+ERRORI CONSOLE: []
+
+=== e2e2 ===
+  ok  pulsante + aggiunge la clip (6 s)
+  ok  durata totale mostrata 0:06.00
+  ok  trascinamento: fantasma visibile
+  ok  trascinamento in timeline aggiunge in coda
+  ok  clic sulla clip sposta il cursore (t=3.00)
+  ok  S divide al cursore [3,3,5]
+  ok  taglio: etichetta durata visibile
+  ok  taglio fine clip: 2 s, totale 10
+  ok  Ctrl+Z annulla il taglio
+  ok  Ctrl+Shift+Z ripete il taglio
+  ok  taglio inizio clip: 2.5 s
+  ok  riordino: indicatore di inserimento
+  ok  riordino: Verticale.mp4, Paesaggio.mp4, Paesaggio.mp4
+  ok  Alt+→ sposta la clip a destra
+  ok  Ctrl+D duplica subito dopo
+  ok  Canc elimina la clip (ripple)
+  ok  Annulla dal toast ripristina la clip
+  ok  menu contestuale con le azioni
+  ok  riproduzione: il tempo avanza (1.78 s)
+  ok  anteprima: il canvas mostra immagini (non nero)
+  ok  Spazio mette in pausa
+  ok  riproduzione attraversa il cambio clip
+  ok  formato 9:16: anteprima verticale
+  ok  Riempi applicato alla clip
+  ok  zoom con +
+  ok  aggancio disattivabile
+  ok  menu cronologia
+  ok  stato: salvato
+  ok  dopo il ricaricamento la timeline è identica
+  ok  nome del progetto salvato
+  ok  dopo il ricaricamento i video sono letti dal browser
+  ok  dashboard: progetto in elenco
+ERRORI CONSOLE: []
+
+=== exact ===
+     decodifica diretta per clip: [ true, true, false, true ]  tempo: 2.0 s per 4.98 s di video
+     fotogrammi: 150 attesi: 150 differenze: 0 []
+  ok  numero di fotogrammi corretto
+  ok  MP4 30 fps con B-frame: tutti i fotogrammi esatti
+  ok  MP4 25 fps convertito a 30 fps: tutti i fotogrammi esatti
+  ok  seconda parte dello stesso file: tutti i fotogrammi esatti
+     WebM (cattura in riproduzione): 0 fotogrammi non esatti su 30
+  ok  nessun errore ai confini tra le clip
+ERRORI CONSOLE: []
+
+=== e2e3 ===
+  ok  timeline pronta (12.008 s)
+     riepilogo: Formato 16:9Risoluzione 1920×1080Durata 12 sPeso stimato ≈ 9,4 MBFile MP4 (H.264 + Opus)
+  ok  preset YouTube 1080p con MP4 H.264
+  ok  esportazione completata in 17.2 s
+  ok  nome file: Prova esportazione.mp4
+     ffprobe: h264 High 1280x720 30/1 audio: opus durata: 12.033333 frames: 361
+  ok  video H.264 1280×720
+  ok  traccia audio presente (opus)
+  ok  durata 12.033333 ≈ 12.01
+  ok  numero fotogrammi 361 = 361
+     PSNR: 23.704666 37.50832 24.715802
+     contatore: 30,30,30,33,34,34,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
+file:///home/claude/work/engimedit1/tests/helpers.mjs:46
+export function check(cond, msg) { if (!cond) throw new Error('FALLITO: ' + msg); console.log('  ok  ' + msg); }
+                                                    ^
+
+Error: FALLITO: contatore: ogni fotogramma esportato è quello esatto della sorgente
+    at check (file:///home/claude/work/engimedit1/tests/helpers.mjs:46:53)
+    at file:///home/claude/work/engimedit1/tests/e2e3.mjs:72:1
+
+Node.js v22.23.5
+
+=== e2e4 ===
+  ok  progetto di esempio: 3 clip generate e in timeline (Alba.mp4, Città.mp4, Onde.mp4)
+  ok  clip di esempio con audio decodificato
+  ok  riapertura senza file: compare "Ritrova i tuoi video"
+  ok  libreria: 3 video segnati da ritrovare
+  ok  due file riconosciuti e ricollegati
+  ok  file sbagliato: messaggio chiaro
+  ok  tutti ricollegati: pulsante Fatto
+  ok  libreria completa dopo il ricollegamento
+  ok  anteprima di nuovo visibile
+  ok  rinomina dalla dashboard
+  ok  duplica crea una copia
+  ok  elimina con conferma
+  ok  annulla eliminazione ripristina il progetto
+  ok  tema chiaro applicato
+  ok  lingua inglese applicata
+  ok  landing in inglese
+  ok  ritorno all'italiano dal footer
+  ok  aiuto: le domande si aprono
+  ok  pagina privacy
+  ok  pagina termini
+  ok  pagina cookie
+  ok  pagina 404
+  ok  tasto ? apre le scorciatoie
+ERRORI CONSOLE: []
+
+=== e2e5 ===
+  ok  telefono: la landing non scorre di lato
+  ok  telefono: messaggio elegante nell'editor
+  ok  telefono: niente tutorial sopra il messaggio
+ERRORI CONSOLE (telefono): []
+  ok  tastiera: Invio sul video lo aggiunge alla timeline
+  ok  tastiera: menu contestuale con Maiusc+F10
+  ok  tastiera: il focus torna alla clip dopo il menu
+  ok  focus visibile sulla clip
+ERRORI CONSOLE (tablet): []
+
+=== e2e6 ===
+  ok  importa immagini (5 s predefiniti) e file solo audio: Paesaggio.mp4:video:6, Foto.png:image:5, Musica.mp3:audio:8, Verticale.mp4:video:5
+  ok  cartelle rapide Tutti/Clip/Immagini/Audio: 4,2,1,1
+  ok  filtro Immagini mostra solo le immagini
+  ok  filtro Audio mostra solo l'audio
+  ok  trascinamento: la traccia V2 si evidenzia
+  ok  tracce: V1=1 V2=1 A1=1
+  ok  immagine in V2 a 2.00 s, durata 5 s
+  ok  musica in A1 dal cursore (1 s)
+  ok  durata del progetto = traccia più lunga (9 s)
+  ok  A1: spostamento libero con aggancio all'inizio (0)
+  ok  B attiva la Lametta
+  ok  Lametta: linea di taglio al passaggio del mouse
+  ok  Lametta taglia al clic: 4 + 2
+  ok  A torna al Puntatore
+  ok  Slip: indicazione della parte usata
+  ok  Slip sposta in/out (1–5) e la durata resta 4 s
+  ok  Ctrl+Z annulla lo slip
+  ok  N attiva/disattiva l'aggancio
+  ok  marker sulla timeline: il clic porta il cursore al marker
+  ok  Maiusc+↓ salta al marker successivo
+  ok  M con una clip selezionata aggiunge un marker alla clip
+  ok  i marker sono bersagli dell'aggancio magnetico
+  ok  etichetta colore dal menu contestuale
+  ok  D disattiva la clip
+  ok  D la riattiva
+  ok  Transform: zoom 150%, rotazione 12°, capovolgi orizzontale
+  ok  Ctrl+Z annulla un passo della trasformazione
+  ok  slider: trascinamento = una sola voce annullabile
+  ok  Zoom dinamico attivato (Zoom in)
+  ok  Ritaglio sinistro 10%
+  ok  Colore: saturazione −100, luci +20
+  ok  Effetti: vignettatura 60%
+  ok  Prima/Dopo (Maiusc+D): 0.0 → 122.9
+  ok  Incolla attributi: colore ed effetti sì, trasformazione no
+  ok  Ctrl+R → 2×: la clip dura 1 s
+  ok  Inspector: sezione Velocità
+  ok  velocità 1× dall'Inspector
+  ok  titolo in V2 nel primo spazio libero (7 s)
+  ok  il titolo mostra il testo sulla timeline
+  ok  Composito: opacità 80% e fusione Scolora
+  ok  A1: Inspector con la scheda Audio
+  ok  dissolvenze 1,5 s / 2 s e preset Musica di sottofondo
+  ok  bande nere 2.39:1 nell'anteprima (bordo 0, centro 255)
+  ok  qualità anteprima 1/2: 633 → 316 px
+  ok  cattura fotogramma: PNG 1920,1080
+  ok  esportazione: durata 11.020000 = progetto 11 (A1 oltre la fine di V1)
+     PSNR anteprima/esportazione: 29.1, 29.1, 65.3
+  ok  WYSIWYG: il file esportato coincide con l'anteprima (colore, trasformazioni, V2, bande nere, grana)
+  ok  la musica di A1 si sente dopo la fine di V1 (-25.9 dB)
+     RMS musica (0 / 0,75 / 3 / 7,9 / 8,3 s): 0.0016 0.0301 0.0607 0.0033 0.0000
+  ok  dissolvenze in entrata e in uscita nel mix esportato
+  ok  impostazioni progetto: regola predefinita Riempi fotogramma
+  ok  esporta progetto: backup .json con tracce e marker
+  ok  importa progetto: copia con nome univoco; progetto schema 1 in elenco
+  ok  ricerca tra i progetti
+  ok  ordinamento per nome: Vecchio progetto, Workflow pro, Workflow pro 2
+  ok  migrazione schema 1 → 2 senza perdita ({"schema":2,"tracks":"v1,v2,a1","n":1,"total":3})
+  ok  interfaccia in inglese (strumenti e Media Pool)
+ERRORI CONSOLE: []
+  ok  nessun errore in console
+
+=== e2e7 ===
+  ok  V1: immagine 2 s + video 6 s a 2× (3 s) + immagine 5 s = 10
+     {"t":3.8080725623582765,"playing":true,"pix":881017,"cur":[[true,"1.00","0.00"],[false,"2.00","3.63"]]}
+  ok  riproduzione: immagine → video a 2× senza blocchi
+     {"t":6.019773242630385,"pix":0}
+  ok  clip disattivata: fotogramma nero in riproduzione
+  ok  esportazione con immagine, 2× e clip disattivata: 300 fotogrammi (300)
+     luminosità 1 s / 3 s / 7 s: 109 130 0
+  ok  immagine e video visibili, clip disattivata nera
+  ok  ritrova i file: video, immagine e audio ricollegati
+  ok  dopo il ricollegamento i file sono pronti
+ERRORI CONSOLE: []
+  ok  nessun errore in console
+
+Controlli superati: 150. Fasi fallite: 1.
+
+Nota: il controllo 'contatore' della fase e2e3 fallisce anche sul codice precedente a questa versione, nello stesso ambiente headless (cattura in riproduzione di un MP4 senza perdite non accettato dal decodificatore WebCodecs di questa build). Eseguendo la fase con quel controllo non bloccante, tutti gli altri controlli di e2e3 risultano superati.

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="it" data-ui="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EngimEdit</title>
+<meta name="description" content="EngimEdit: l'editor video nel browser per chi inizia. Taglia, dividi, unisci ed esporta in MP4. I video restano sul tuo computer.">
+<meta name="theme-color" content="#0d0a1e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+/* Tema applicato prima del primo disegno, per evitare lampi di colore */
+(function () {
+  try {
+    var r = document.documentElement, p = JSON.parse(localStorage.getItem('engimedit:theme') || '"dark"'), e = p;
+    if (p === 'system') { var h = r.getAttribute('data-theme'); e = h === 'dark' || h === 'light' ? h : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+    r.setAttribute('data-ui', e === 'light' ? 'light' : 'dark');
+  } catch (x) { /* archiviazione non disponibile: resta il tema scuro */ }
+})();
+</script>
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="eg-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C4B5FD"/><stop offset=".5" stop-color="#8B6CFF"/><stop offset="1" stop-color="#6A45F5"/></linearGradient>
+    <radialGradient id="eg-glow"><stop offset="0" stop-color="#7B5CFF" stop-opacity=".8"/><stop offset="1" stop-color="#7B5CFF" stop-opacity="0"/></radialGradient>
+    <filter id="eg-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+</svg>
+<button class="btn btn-primary btn-sm skip" type="button" onclick="var m=document.getElementById('main');if(m)m.focus()">Vai al contenuto</button>
+<div id="app"></div>
+<noscript><p style="padding:24px;font-family:system-ui">EngimEdit richiede JavaScript attivo.</p></noscript>
+<script>
+/* mp4-muxer 5.2.2 (MIT) — https://github.com/Vanilagy/mp4-muxer */
+/*__VENDOR__*/
+</script>
+<script>
+/*__APP__*/
+</script>
+</body>
+</html>
